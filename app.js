@@ -1,4 +1,5 @@
 let allProducts = [];
+let cart = [];
 const search = document.getElementById('search');
 const category = document.getElementById('category');
 
@@ -32,10 +33,11 @@ function renderProduct(product) {
             return;
         }
     container.innerHTML = product
-        .map((item, i) => `<article>
+        .map((item, i) => `<article><hr>
         ${i + 1}. ${item.title}. ${item.price}. <br>
         ${item.description}.<br>
-        <img src="${item.image}" alt="${item.title}" width="100" height="100"> <br><br></article>`)
+        <img src="${item.image}" alt="${item.title}" width="100" height="100"><br>
+        <button type="button" onclick="addToCart(${item.id})">Add to cart</button><br><hr></article>`)
         .join(''); 
 }
 
@@ -53,8 +55,11 @@ function applyFilters() {
 
     renderProduct(result);               
 }
+
+function addToCart(id) {
+    const product = allProducts.find(item => item.id === id);
+    cart.push(product);
+    console.log(cart);
+}
+
 loadProduct()
-
-
-// 
-// 
