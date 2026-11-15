@@ -36,7 +36,7 @@ function renderProduct(product) {
         .map((item, i) => `<article><hr>
         ${i + 1}. ${item.title}. ${item.price}. <br>
         ${item.description}.<br>
-        <img src="${item.image}" alt="${item.title}" width="100" height="100"><br>
+        <img src="${item.image}" alt="${item.title}" width="100" ><br>
         <button type="button" onclick="addToCart(${item.id})">Add to cart</button><br><hr></article>`)
         .join(''); 
 }
@@ -59,7 +59,19 @@ function applyFilters() {
 function addToCart(id) {
     const product = allProducts.find(item => item.id === id);
     cart.push(product);
-    console.log(cart);
+    renderCart();
 }
 
+function renderCart() {
+    const info = document.getElementById("cart-info")
+    
+    if(cart.length === 0){
+            info.innerHTML = `<article>Cart is empty</article>`;
+            return;
+        } 
+
+        const cost = cart.reduce((sum, item) => sum + item.price, 0)
+        info.innerHTML = `<article>Products in cart:${cart.length} <br>
+        Total price: ${cost.toFixed(2)}$</article>`;    
+}
 loadProduct()
