@@ -2,6 +2,7 @@ let allProducts = [];
 let cart = [];
 const search = document.getElementById('search');
 const category = document.getElementById('category');
+const deleteCart = document.getElementById('delete')
 
 search.addEventListener('input', () => {
     applyFilters();
@@ -10,6 +11,11 @@ search.addEventListener('input', () => {
 category.addEventListener('change', () => {
     applyFilters();
 });
+deleteCart.addEventListener('click', () =>{
+        cart.length = 0; // cart = [];
+        renderCart();
+});
+
 async function loadProduct() {
     try {
         const res = await fetch("https://fakestoreapi.com/products");
@@ -34,7 +40,7 @@ function renderProduct(product) {
         }
     container.innerHTML = product
         .map((item, i) => `<article><hr>
-        ${i + 1}. ${item.title}. ${item.price}. <br>
+        ${i + 1}<br> ${item.title}<br> ${item.price}$<br> <br>
         ${item.description}.<br>
         <img src="${item.image}" alt="${item.title}" width="100" ><br>
         <button type="button" onclick="addToCart(${item.id})">Add to cart</button><br><hr></article>`)
@@ -63,7 +69,8 @@ function addToCart(id) {
 }
 
 function renderCart() {
-    const info = document.getElementById("cart-info")
+    const info = document.getElementById("cart-info");
+    
     
     if(cart.length === 0){
             info.innerHTML = `<article>Cart is empty</article>`;
@@ -72,6 +79,8 @@ function renderCart() {
 
         const cost = cart.reduce((sum, item) => sum + item.price, 0)
         info.innerHTML = `<article>Products in cart:${cart.length} <br>
-        Total price: ${cost.toFixed(2)}$</article>`;    
+        Total price: ${cost.toFixed(2)}$</article>`; 
+           
 }
+
 loadProduct()
