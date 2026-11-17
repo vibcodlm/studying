@@ -67,10 +67,13 @@ function addToCart(id) {
     cart.push(product);
     renderCart();
 }
+function deleteFromCart(i) {
+    cart.splice(i, 1);
+    renderCart()
+}
 
 function renderCart() {
     const info = document.getElementById("cart-info");
-    
     
     if(cart.length === 0){
             info.innerHTML = `<article>Cart is empty</article>`;
@@ -78,9 +81,16 @@ function renderCart() {
         } 
 
         const cost = cart.reduce((sum, item) => sum + item.price, 0)
-        info.innerHTML = `<article>Products in cart:${cart.length} <br>
-        Total price: ${cost.toFixed(2)}$</article>`; 
-           
+        info.innerHTML = `
+        <article>Products in cart:${cart.length} <br>
+        Total price: ${cost.toFixed(2)}$</article>
+        `; 
+        info.innerHTML += cart.map((item, i) => `<article><hr>
+        ${i + 1}<br> ${item.title}<br> ${item.price}$<br> <br>
+        ${item.description}.<br>
+        <img src="${item.image}" alt="${item.title}" width="100" ><br>
+        <button type="button" onclick="deleteFromCart(${i})">Delete</button><br><hr></article>`)
+        .join(''); 
 }
 
 loadProduct()
