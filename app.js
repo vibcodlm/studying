@@ -1,8 +1,17 @@
 let allProducts = [];
-let cart = [];
+const savedCart = localStorage.getItem('cart');
+let cart;
+if(savedCart){
+    cart = JSON.parse(savedCart)
+} else {
+    cart = [];
+}
+console.log(cart)
 const search = document.getElementById('search');
 const category = document.getElementById('category');
 const deleteCart = document.getElementById('delete')
+
+
 
 search.addEventListener('input', () => {
     applyFilters();
@@ -13,6 +22,7 @@ category.addEventListener('change', () => {
 });
 deleteCart.addEventListener('click', () =>{
         cart.length = 0; // cart = [];
+        saveCart();
         renderCart();
 });
 
@@ -44,7 +54,7 @@ function renderProduct(product) {
         ${item.description}.<br>
         <img src="${item.image}" alt="${item.title}" width="100" ><br>
         <button type="button" onclick="addToCart(${item.id})">Add to cart</button><br><hr></article>`)
-        .join(''); 
+        .join('');
 }
 
 function applyFilters() {
@@ -57,19 +67,21 @@ function applyFilters() {
         result = result.filter(item => item.category === selectedCategory);
     }
 
-    result = result.filter(item => item.title.toLowerCase().includes(text));   
+    result = result.filter(item => item.title.toLowerCase().includes(text));
 
-    renderProduct(result);               
+    renderProduct(result);   
 }
 
 function addToCart(id) {
     const product = allProducts.find(item => item.id === id);
     cart.push(product);
     renderCart();
+    saveCart();
 }
 function deleteFromCart(i) {
     cart.splice(i, 1);
     renderCart()
+    saveCart();
 }
 
 function renderCart() {
@@ -78,19 +90,25 @@ function renderCart() {
     if(cart.length === 0){
             info.innerHTML = `<article>Cart is empty</article>`;
             return;
-        } 
+        }
 
         const cost = cart.reduce((sum, item) => sum + item.price, 0)
         info.innerHTML = `
         <article>Products in cart:${cart.length} <br>
         Total price: ${cost.toFixed(2)}$</article>
-        `; 
+        `;
         info.innerHTML += cart.map((item, i) => `<article><hr>
         ${i + 1}<br> ${item.title}<br> ${item.price}$<br> <br>
         ${item.description}.<br>
         <img src="${item.image}" alt="${item.title}" width="100" ><br>
         <button type="button" onclick="deleteFromCart(${i})">Delete</button><br><hr></article>`)
-        .join(''); 
+        .join('');
+}
+
+function saveCart() {
+    const cartText = JSON.stringify(cart);
+    localStorage.setItem('cart', cartText);
 }
 
 loadProduct()
+renderCart()
