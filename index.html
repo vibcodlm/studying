@@ -5,14 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="app.js" defer></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>Mini shop</h1><hr>
-    <section>
-        <h2>Cart</h2>
+    <h3>Cart</h3>
+    <button id="show-cart" type="button" onclick="toggleCart()">Show cart</button>
+    <section id="cart" class="hiden">
         <p id="cart-info">Cart is empty</p>
         <button id="delete" type="button">delete</button>
     </section>
+    <br>
     <input type="search" id="search" placeholder="Поиск товаров">
     <br>
     <label for="cetegory">Category</label>
@@ -26,10 +29,4 @@
 
     <div class="prod" id="prod"></div>
 </body>
-<style>
-.prod{
-    font-size: 10px;
-}
-
-</style>
 </html>

@@ -13,6 +13,7 @@ const deleteCart = document.getElementById('delete')
 
 
 
+
 search.addEventListener('input', () => {
     applyFilters();
 });
@@ -49,11 +50,13 @@ function renderProduct(product) {
             return;
         }
     container.innerHTML = product
-        .map((item, i) => `<article><hr>
-        ${i + 1}<br> ${item.title}<br> ${item.price}$<br> <br>
-        ${item.description}.<br>
-        <img src="${item.image}" alt="${item.title}" width="100" ><br>
-        <button type="button" onclick="addToCart(${item.id})">Add to cart</button><br><hr></article>`)
+        .map((item, i) => `<article class="article">
+        <img src="${item.image}" alt="${item.title}" class="image">
+        <h2>${item.title} </h2>
+        <p>Price: ${item.price}$</p>
+        <p class="description">${item.description}</p>
+        <button type="button" onclick="addToCart(${item.id})">Add to cart</button>
+        </article>`)
         .join('');
 }
 
@@ -94,20 +97,26 @@ function renderCart() {
 
         const cost = cart.reduce((sum, item) => sum + item.price, 0)
         info.innerHTML = `
-        <article>Products in cart:${cart.length} <br>
+        <article>Products in cart:${cart.length} 
         Total price: ${cost.toFixed(2)}$</article>
         `;
-        info.innerHTML += cart.map((item, i) => `<article><hr>
-        ${i + 1}<br> ${item.title}<br> ${item.price}$<br> <br>
-        ${item.description}.<br>
-        <img src="${item.image}" alt="${item.title}" width="100" ><br>
-        <button type="button" onclick="deleteFromCart(${i})">Delete</button><br><hr></article>`)
+        info.innerHTML += cart.map((item, i) => `<div class="article-container"><article class="article">
+        <img src="${item.image}" alt="${item.title}" class="image">
+        <h2>${item.title} </h2>
+        <p>Price: ${item.price}$</p>
+        <p class="description">${item.description}</p>
+        <button type="button" onclick="deleteFromCart(${i})">Delete</button></article></div>`)
         .join('');
 }
 
 function saveCart() {
     const cartText = JSON.stringify(cart);
     localStorage.setItem('cart', cartText);
+}
+
+function toggleCart() {
+    const cartSection = document.getElementById('cart');
+    cartSection.classList.toggle('hiden');
 }
 
 loadProduct()
